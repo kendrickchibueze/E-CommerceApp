@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Infrastructure.Data
 {
@@ -23,11 +24,15 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+            modelBuilder.Entity<Product>()
+                           .Property(p => p.Description)
+                           .HasMaxLength(1000);
 
-            modelBuilder.ApplyConfiguration(new BrandsConfiguration());
-            modelBuilder.ApplyConfiguration(new ProductsConfiguration());
-            modelBuilder.ApplyConfiguration(new TypesConfiguration());
+            /*  modelBuilder.ApplyConfiguration(new BrandsConfiguration());
+              modelBuilder.ApplyConfiguration(new ProductsConfiguration());
+              modelBuilder.ApplyConfiguration(new TypesConfiguration());*/
 
 
         }

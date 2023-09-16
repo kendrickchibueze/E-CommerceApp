@@ -1,11 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
@@ -20,7 +15,7 @@ namespace Infrastructure.Data
 
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandAsync()
         {
-            return await _dbContext.ProductBrands.ToListAsync(); 
+            return await _dbContext.ProductBrands.ToListAsync();
         }
 
         public async Task<Product> GetProductByIdAsync(int id)
@@ -28,7 +23,7 @@ namespace Infrastructure.Data
             return (await _dbContext.Products
                 .Include(p => p.ProductType)
                 .Include(p => p.ProductBrand)
-                .FirstOrDefaultAsync(p=>p.Id == id))!;
+                .FirstOrDefaultAsync(p => p.Id == id))!;
         }
 
 
@@ -36,7 +31,7 @@ namespace Infrastructure.Data
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
         {
             return await _dbContext.Products
-                 .Include(p=>p.ProductType)
+                 .Include(p => p.ProductType)
                  .Include(p => p.ProductBrand)
                 .ToListAsync();
         }
