@@ -70,9 +70,10 @@ namespace E_CommerceApp.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork<StoreContext>>();
             services.AddScoped<IProductService, ProductServices>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ITokenService, TokenService>();
 
 
-            services.AddIdentityServices();
+            services.AddIdentityServices(configuration);
 
 
             services.Configure<ApiBehaviorOptions>(options =>

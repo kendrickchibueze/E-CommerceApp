@@ -90,10 +90,17 @@ namespace E_CommerceApp
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
-                await context.Database.MigrateAsync();
-                await identityContext.Database.MigrateAsync();
-                await StoreContextSeed.SeedAsync(context);
-                await IdentityDbContextSeed.SeedUsersAsync(userManager);
+                 
+                bool isSeeded = context.Database.GetAppliedMigrations().Any();
+
+                if (!isSeeded)
+                {
+                    
+                    await context.Database.MigrateAsync();
+                    await identityContext.Database.MigrateAsync();
+                    await StoreContextSeed.SeedAsync(context);
+                    await IdentityDbContextSeed.SeedUsersAsync(userManager);
+                }
             }
             catch (Exception ex)
             {
