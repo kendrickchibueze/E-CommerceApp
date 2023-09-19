@@ -19,7 +19,7 @@ namespace E_CommerceApp.Controllers
         [Authorize]
         public ActionResult<string> GetSecretText()
         {
-            return "Secret Stuff";
+            return "Secret Stuff to think";
         }
 
 
