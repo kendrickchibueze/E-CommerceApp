@@ -66,6 +66,7 @@ namespace E_CommerceApp.Controllers
             /*var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
 
             var user = await _userManager.FindByEmailAsync(email);*/
+            //
 
             var user = await _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User); //because we want the navigation properties
 
