@@ -96,16 +96,8 @@ namespace E_CommerceApp.Extensions
 
             
 
-            /*  var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-               var identityContext = serviceProvider.GetRequiredService<AppIdentityDbContext>();
+         
 
-
-
-             identityContext.Database.Migrate();
-
-
-             IdentityDbContextSeed.SeedUsersAsync(userManager).Wait(); 
- */
 
 
 
