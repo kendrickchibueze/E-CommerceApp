@@ -9,14 +9,11 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Helpers
 {
-    public class CustomerBasketMappingProfile:Profile
+    public class BasketItemMappingProfile:Profile
     {
-
-        public CustomerBasketMappingProfile()
+        public BasketItemMappingProfile()
         {
-
-            CreateMap<CustomerBasketDto, CustomerBasket>();
-            
+            CreateMap<BasketItemDto, BasketItem>();
         }
     }
 }
