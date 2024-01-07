@@ -6,11 +6,8 @@ using Infrastructure.Identity;
 using Infrastructure.Implementations;
 using Infrastructure.Interfaces;
 using Infrastructure.Services;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
 namespace E_CommerceApp.Extensions
@@ -43,7 +40,7 @@ namespace E_CommerceApp.Extensions
         {
             var connectionString = configuration.GetSection("ConnectionString")["DefaultConn"];
 
-             var identityConnection = configuration.GetSection("ConnectionString")["IdentityConnection"];
+            var identityConnection = configuration.GetSection("ConnectionString")["IdentityConnection"];
 
             services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
@@ -71,6 +68,7 @@ namespace E_CommerceApp.Extensions
             services.AddScoped<IProductService, ProductServices>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
 
 
             services.AddIdentityServices(configuration);
@@ -94,9 +92,9 @@ namespace E_CommerceApp.Extensions
             });
 
 
-            
 
-         
+
+
 
 
 
@@ -105,10 +103,10 @@ namespace E_CommerceApp.Extensions
         }
 
 
-      
 
 
-       
+
+
 
 
 
