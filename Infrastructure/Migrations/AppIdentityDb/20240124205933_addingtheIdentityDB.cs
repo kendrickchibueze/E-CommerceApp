@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations.AppIdentityDb
 {
-    public partial class CreateIdentityDatabase : Migration
+    public partial class addingtheIdentityDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

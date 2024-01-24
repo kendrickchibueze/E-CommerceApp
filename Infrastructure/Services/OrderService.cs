@@ -26,39 +26,52 @@ namespace Infrastructure.Services
             _basketRepo = basketRepo;
         }
 
+        
         public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
         {
-            //get basket from the repo
+            
             var basket = await _basketRepo.GetBasketAsync(basketId);
 
-            //get items from the product repo
             var items = new List<OrderItem>();
 
             foreach (var item in basket.Items)
             {
                 var productItem = await _productsRepo.GetByIdAsync(item.Id.ToString());
-                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name,
-                    productItem.PictureUrl);
+
+                
+                if (productItem == null)
+                {
+                    
+                    throw new NotFoundException($"Product item with ID {item.Id} not found.");
+                }
+
+                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
 
                 items.Add(orderItem);
             }
 
-
-
-            //get delivery method from repo
+            
             var deliveryMethod = await _deliveryMethodRepo.GetByIdAsync(deliveryMethodId.ToString());
 
-            //calc subtotal
+            if (deliveryMethod == null)
+            {
+                
+                throw new NotFoundException($"Delivery method with ID {deliveryMethodId} not found.");
+            }
+
+            
             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
-            //create order
-            var order = new Order(items, buyerEmail,shippingAddress,deliveryMethod,subtotal);
+            
+            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
 
-            // Todo: save to db
+            _orderRepo.Add(order);
+
 
             return order;
         }
+
 
         public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
         {

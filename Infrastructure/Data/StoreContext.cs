@@ -34,9 +34,6 @@ namespace Infrastructure.Data
                            .Property(p => p.Description)
                            .HasMaxLength(1000);
 
-          
-
-
         }
     }
 

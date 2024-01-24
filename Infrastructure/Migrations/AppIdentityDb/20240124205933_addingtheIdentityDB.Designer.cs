@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations.AppIdentityDb
 {
     [DbContext(typeof(AppIdentityDbContext))]
-    [Migration("20230910033856_CreateIdentityDatabase")]
-    partial class CreateIdentityDatabase
+    [Migration("20240124205933_addingtheIdentityDB")]
+    partial class addingtheIdentityDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -90,12 +90,11 @@ namespace E_CommerceApp
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             try
             {
-                 
                 bool isSeeded = context.Database.GetAppliedMigrations().Any();
 
                 if (!isSeeded)
                 {
-                    
+
                     await context.Database.MigrateAsync();
                     await identityContext.Database.MigrateAsync();
                     await StoreContextSeed.SeedAsync(context);
@@ -107,6 +106,8 @@ namespace E_CommerceApp
                 var logger = loggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "An error occured during migration");
             }
+
+
 
 
             app.Run();
