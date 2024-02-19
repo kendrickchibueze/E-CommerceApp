@@ -2,6 +2,7 @@
 using Core.Entities;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
+using Core.Specifications;
 using Infrastructure.Interfaces;
 
 namespace Infrastructure.Services
@@ -24,6 +25,7 @@ namespace Infrastructure.Services
             _productsRepo = _unitOfWork.GetRepository<Product>();
             _deliveryMethodRepo = _unitOfWork.GetRepository<DeliveryMethod>();
             _basketRepo = basketRepo;
+           
         }
 
         
@@ -31,6 +33,7 @@ namespace Infrastructure.Services
         {
             
             var basket = await _basketRepo.GetBasketAsync(basketId);
+           
 
             var items = new List<OrderItem>();
 
@@ -38,12 +41,7 @@ namespace Infrastructure.Services
             {
                 var productItem = await _productsRepo.GetByIdAsync(item.Id.ToString());
 
-                
-                if (productItem == null)
-                {
-                    
-                    throw new NotFoundException($"Product item with ID {item.Id} not found.");
-                }
+    
 
                 var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
@@ -54,38 +52,39 @@ namespace Infrastructure.Services
             
             var deliveryMethod = await _deliveryMethodRepo.GetByIdAsync(deliveryMethodId.ToString());
 
-            if (deliveryMethod == null)
-            {
-                
-                throw new NotFoundException($"Delivery method with ID {deliveryMethodId} not found.");
-            }
+            
+             var subtotal = items.Sum(item => item.Price * item.Quantity);
 
             
-            var subtotal = items.Sum(item => item.Price * item.Quantity);
+             var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
 
-            
-            var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+               //_orderRepo.Add(order); //not able to save to the db
+           
 
-            _orderRepo.Add(order);
+
+
+            await _basketRepo.DeleteBasketAsync(basketId);
 
 
             return order;
         }
 
 
-        public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
+        public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
         {
-            throw new NotImplementedException();
+           return await _deliveryMethodRepo.ListAllAsync();
         }
 
-        public Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
+        public async Task<Order> GetOrderByIdAsync(int id, string buyerEmail)
         {
-            throw new NotImplementedException();
+           var spec = new OrdersWithItemsAndOrderingSpecification(id, buyerEmail);
+            return await _orderRepo.GetEntityWithSpec(spec);
         }
 
-        public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
+        public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
-            throw new NotImplementedException();
+            var spec = new OrdersWithItemsAndOrderingSpecification(buyerEmail);
+            return await _orderRepo.ListAsync(spec);
         }
     }
 }

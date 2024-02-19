@@ -84,6 +84,8 @@ namespace Infrastructure.Interfaces
         /* Task<T> GetByIdAsync(object id);*/
         Task<T> GetByIdAsync(string id);
 
+
+
         Task<bool> AnyAsync(Expression<Func<T, bool>> predicate = null);
 
         bool Any(Expression<Func<T, bool>> predicate = null);

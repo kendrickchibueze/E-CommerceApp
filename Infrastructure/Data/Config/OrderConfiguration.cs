@@ -13,6 +13,8 @@ namespace Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder.Property(p => p.Id).ValueGeneratedOnAdd();
+
             builder.OwnsOne(o => o.ShipToAddress, a => 
             {
                 a.WithOwner();
