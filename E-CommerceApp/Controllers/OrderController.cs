@@ -69,5 +69,7 @@ namespace E_CommerceApp.Controllers
            
             return Ok(await  _orderService.GetDeliveryMethodsAsync());
         }
+
+        //working
     }
 }
