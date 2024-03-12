@@ -11,10 +11,8 @@ namespace Infrastructure.Helpers
 {
     public class CustomerBasketMappingProfile:Profile
     {
-
         public CustomerBasketMappingProfile()
         {
-
             CreateMap<CustomerBasketDto, CustomerBasket>();
             
         }

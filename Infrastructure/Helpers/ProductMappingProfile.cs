@@ -6,7 +6,6 @@ namespace Infrastructure.Helpers
 {
     public class ProductMappingProfile : Profile
     {
-
         public ProductMappingProfile()
         {
             CreateMap<Product, ProductToReturnDto>()
@@ -14,9 +13,7 @@ namespace Infrastructure.Helpers
                .ForMember(dest => dest.ProductBrand, opt => opt.MapFrom(src => src.ProductBrand.Name))
                .ForMember(dest => dest.PictureUrl, opt => opt.MapFrom<ProductUrlResolver>());
                 
-
             CreateMap<ProductToReturnDto, Product>();
-
         }
     }
 }

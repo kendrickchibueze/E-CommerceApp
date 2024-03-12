@@ -26,39 +26,23 @@ namespace Infrastructure.Services
             _deliveryMethodRepo = _unitOfWork.GetRepository<DeliveryMethod>();
             _basketRepo = basketRepo;
            
-        }
-
-        
+        }     
         public async Task<Order> CreateOrderAsync(string buyerEmail, int deliveryMethodId, string basketId, Address shippingAddress)
         {
             
             var basket = await _basketRepo.GetBasketAsync(basketId);
-           
-
             var items = new List<OrderItem>();
-
             foreach (var item in basket.Items)
             {
                 var productItem = await _productsRepo.GetByIdAsync(item.Id.ToString());
-
-    
-
                 var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
-
                 items.Add(orderItem);
             }
-
-            
+    
             var deliveryMethod = await _deliveryMethodRepo.GetByIdAsync(deliveryMethodId.ToString());
-
-            
              var subtotal = items.Sum(item => item.Price * item.Quantity);
-
-            
-             var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
-
-              
+             var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);     
             try
             {
                 _orderRepo.Add(order);
@@ -72,11 +56,8 @@ namespace Infrastructure.Services
             }
 
             await _basketRepo.DeleteBasketAsync(basketId);
-
-
             return order;
         }
-
 
         public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
         {
@@ -88,7 +69,6 @@ namespace Infrastructure.Services
            var spec = new OrdersWithItemsAndOrderingSpecification(id, buyerEmail);
             return await _orderRepo.GetEntityWithSpec(spec);
         }
-
         public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string buyerEmail)
         {
             var spec = new OrdersWithItemsAndOrderingSpecification(buyerEmail);

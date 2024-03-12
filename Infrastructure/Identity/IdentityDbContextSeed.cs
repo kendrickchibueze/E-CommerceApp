@@ -27,7 +27,6 @@ namespace Infrastructure.Identity
                         City = "Missouri",
                         State = "MS",
                         Zipcode = "90210"
-
                     }
                 };
                 await userManager.CreateAsync(user, "Pa$$w0rd2245");    
