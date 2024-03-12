@@ -6,7 +6,6 @@ namespace Infrastructure.Data.Config
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
-
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.Property(p => p.Id).ValueGeneratedOnAdd();
