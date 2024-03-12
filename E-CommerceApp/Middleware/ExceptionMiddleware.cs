@@ -17,13 +17,11 @@ namespace E_CommerceApp.Middleware
             _logger = logger;
             _env = env;
         }
-
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
                 await _next(context);
-
             }
             catch (Exception ex)
             {
@@ -35,7 +33,6 @@ namespace E_CommerceApp.Middleware
                     ? new ApiException((int)HttpStatusCode.InternalServerError, ex.Message,
                     ex.StackTrace.ToString())
                     : new ApiException((int)HttpStatusCode.InternalServerError);
-
                 var options = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

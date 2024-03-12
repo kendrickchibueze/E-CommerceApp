@@ -11,8 +11,6 @@ namespace E_CommerceApp.Extensions
             services.AddSwaggerGen(sw =>
             {
                 sw.SwaggerDoc("v1", new OpenApiInfo { Title = "ECommerceAPI", Version = "1.0" });
-
-
                 var securitySchema = new OpenApiSecurityScheme
                 {
                     Description = "JWT Auth Bearer Scheme",
@@ -29,7 +27,6 @@ namespace E_CommerceApp.Extensions
 
                 sw.AddSecurityDefinition("Bearer", securitySchema);
                 var securityRequirement = new OpenApiSecurityRequirement{ { securitySchema, new[] { "Bearer" }}};
-
                 sw.AddSecurityRequirement(securityRequirement);
             });
 
@@ -41,10 +38,7 @@ namespace E_CommerceApp.Extensions
             app.UseSwagger();
             app.UseSwaggerUI(c => 
                     { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Ecommerce Api v1"); });
-
-
             return app;
-
         }
     }
 }

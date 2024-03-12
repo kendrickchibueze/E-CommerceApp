@@ -13,13 +13,9 @@ namespace E_CommerceApp.Extensions
             IConfiguration config)
         {
             var builder = services.AddIdentityCore<AppUser>();
-
             builder = new IdentityBuilder(builder.UserType, builder.Services);
-
             builder.AddEntityFrameworkStores<AppIdentityDbContext>();
-
             builder.AddSignInManager<SignInManager<AppUser>>();
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -34,7 +30,6 @@ namespace E_CommerceApp.Extensions
                 });
 
             return services;
-
         }
     }
 }

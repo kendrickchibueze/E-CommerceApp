@@ -36,19 +36,13 @@ namespace E_CommerceApp.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            //var email = HttpContext.User?.Claims?.FirstOrDefault(x=>x.Type == ClaimTypes.Email)?.Value;
-            //var user = await _userManager.FindByEmailAsync(email); 
-
-            var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User);
-
+           var user = await _userManager.FindByEmailFromClaimsPrinciple(HttpContext.User);
             return new UserDto
             {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user),
                 DisplayName = user.DisplayName
             };
-
-
         }
 
         [HttpGet("emailexists")]
@@ -62,16 +56,8 @@ namespace E_CommerceApp.Controllers
         [HttpGet("address")]
         public async Task<ActionResult<AddressDto>> GetUserAddress()
         {
-
-            /*var email = HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
-
-            var user = await _userManager.FindByEmailAsync(email);*/
-            //
-
-            var user = await _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User); //because we want the navigation properties
-
+            var user = await _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User); 
             return _mapper.Map<AddressDto>(user.Address);
-
         }
 
 
@@ -80,16 +66,10 @@ namespace E_CommerceApp.Controllers
         public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
         {
             var user = await  _userManager.FindUserByClaimsPrincipleWithAddressAsync(HttpContext.User);
-
             user.Address = _mapper.Map<AddressDto, Address>(address);
-
             var result =  await _userManager.UpdateAsync(user); 
-
             if(result.Succeeded) return Ok(_mapper.Map<Address, AddressDto>(user.Address));
-
-            return BadRequest("Problem updating the user");
-            
-            
+            return BadRequest("Problem updating the user");     
         }
 
 
@@ -98,13 +78,9 @@ namespace E_CommerceApp.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-
             if (user == null) return Unauthorized(new ApiResponse(401));
-
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-
             if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
-
             return new UserDto
             {
                 Email = user.Email,
@@ -117,7 +93,6 @@ namespace E_CommerceApp.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            //we use result.Value because this is an async method.
             if (CheckEmailExistsAsync(registerDto.Email).Result.Value)
             {
                 return new BadRequestObjectResult(new ApiValidationErrorResponse
@@ -125,7 +100,6 @@ namespace E_CommerceApp.Controllers
                     Errors = new[] { "Email address is in use" }
                 });
             }
-
             var user = new AppUser
             {
                 DisplayName = registerDto.DisplayName,

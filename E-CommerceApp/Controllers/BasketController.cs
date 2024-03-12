@@ -24,7 +24,7 @@ namespace E_CommerceApp.Controllers
         public async Task<ActionResult<CustomerBasket>> GetBasketById(string id)
         {
             var basket = await _basketRepository.GetBasketAsync(id);
-            return Ok(basket ?? new CustomerBasket(id)); //if it returns null create a new customer basket with an id
+            return Ok(basket ?? new CustomerBasket(id)); 
         }
 
         [HttpPost]
@@ -35,17 +35,10 @@ namespace E_CommerceApp.Controllers
             return Ok(updatedBasket);
         }
 
-
-
-
         [HttpDelete]
         public async Task DeleteBasketAsync(string id)
         {
             await _basketRepository.DeleteBasketAsync(id);
         }
-
-
-
-
     }
 }

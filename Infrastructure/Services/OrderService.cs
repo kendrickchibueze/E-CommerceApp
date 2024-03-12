@@ -58,10 +58,18 @@ namespace Infrastructure.Services
             
              var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
 
-               //_orderRepo.Add(order); //not able to save to the db
-           
-
-
+              
+            try
+            {
+                _orderRepo.Add(order);
+                await _orderRepo.SaveAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+               
+                throw;
+            }
 
             await _basketRepo.DeleteBasketAsync(basketId);
 

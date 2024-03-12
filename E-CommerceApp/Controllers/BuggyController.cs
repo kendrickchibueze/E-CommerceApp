@@ -22,16 +22,6 @@ namespace E_CommerceApp.Controllers
             return "Secret Stuff to think";
         }
 
-
-
-
-
-
-
-
-
-
-
         [HttpGet("notfound")]
         public ActionResult GetNotFoundRequest()
         {
@@ -47,10 +37,7 @@ namespace E_CommerceApp.Controllers
         public ActionResult GetServerError()
         {
             var thing = _dbcontext.Products.Find(42);
-
-            //cannot do ToString() for sth that doesnot exist
             var thingToReturn = thing.ToString();
-
             return Ok();
         }
 
@@ -62,8 +49,7 @@ namespace E_CommerceApp.Controllers
 
         [HttpGet("badrequest/{id}")]
         public ActionResult GetNotFoundRequest(int id)
-        {
-            
+        {  
             return Ok();
         }
 
